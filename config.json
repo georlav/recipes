@@ -1,0 +1,8 @@
+{
+  "recipePuppyAPI": {
+    "host": "http://www.recipepuppy.com",
+    "timeout": 15,
+    "numOfWorkers": 15,
+    "numOfPages":   15
+  }
+}
