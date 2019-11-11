@@ -2,13 +2,14 @@ package recipe_test
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 
 	"github.com/georlav/recipes/config"
 	"github.com/georlav/recipes/recipe"
 )
 
-func TestService_GetRecipes(t *testing.T) {
+func TestService_GetRecipes2(t *testing.T) {
 	c := config.RecipePuppyAPI{
 		Host:    "http://www.recipepuppy.com",
 		Timeout: 15,
@@ -22,12 +23,6 @@ func TestService_GetRecipes(t *testing.T) {
 		error       error
 	}{
 		{
-			"should fail due to invalid page number",
-			0,
-			0,
-			fmt.Errorf("invalid response, %s, url: %s", "500 Internal Server Error", c.Host+"/api?p=0"),
-		},
-		{
 			"Should successfully fetch 10 results",
 			1,
 			10,
@@ -39,18 +34,24 @@ func TestService_GetRecipes(t *testing.T) {
 			0,
 			nil,
 		},
+		{
+			"should fail due to invalid page number",
+			0,
+			0,
+			fmt.Errorf("failed to retrive results, 500 %s", http.StatusText(http.StatusInternalServerError)),
+		},
 	}
 
 	for i := range testCases {
 		tc := testCases[i]
 
 		t.Run(tc.desc, func(t *testing.T) {
-			results, err := s.GetRecipes(tc.page)
+			result, err := s.Get(tc.page)
 			if err != nil && err.Error() != tc.error.Error() {
 				t.Fatal(err)
 			}
 
-			if rlen := len(results); rlen != tc.resultCount {
+			if rlen := len(result.Results); rlen != tc.resultCount {
 				t.Fatalf("Invalid number of results expected %d got %d", tc.resultCount, rlen)
 			}
 		})

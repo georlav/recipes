@@ -23,37 +23,36 @@ func NewService(cfg config.RecipePuppyAPI) *Service {
 	}
 }
 
-func (s Service) GetRecipes(page int) (r Recipes, err error) {
+func (s Service) Get(page int) (rr RecipeResponse, err error) {
 	req, err := http.NewRequest(
 		http.MethodGet,
 		fmt.Sprintf(`%s/%s?p=%d`, s.cfg.Host, "api", page),
 		nil,
 	)
 	if err != nil {
-		return r, err
+		return rr, err
 	}
 
 	resp, err := s.client.Do(req)
 	if err != nil {
-		return r, err
+		return rr, err
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return r, fmt.Errorf("invalid response, %s, url: %s", resp.Status, req.URL)
+		return rr, fmt.Errorf("failed to retrive results, %s", resp.Status)
 	}
 
-	rr := RecipeResponse{}
 	if err := json.NewDecoder(resp.Body).Decode(&rr); err != nil {
-		return r, err
+		return rr, fmt.Errorf("failed to unmarshal response, %w", err)
 	}
 
-	for i := range rr.Results {
-		r = append(r, Recipe{
-			Title:       rr.Results[i].Title,
-			Ingredients: rr.Results[i].Ingredients,
-			PageFound:   page,
-		})
-	}
+	//for i := range rr.Results {
+	//	r = append(r, Recipe{
+	//		Title:       rr.Results[i].Title,
+	//		Ingredients: rr.Results[i].Ingredients,
+	//		PageFound:   page,
+	//	})
+	//}
 
-	return r, nil
+	return rr, nil
 }
