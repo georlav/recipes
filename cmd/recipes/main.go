@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"sync"
 
@@ -10,10 +11,18 @@ import (
 )
 
 func main() {
+	logger := log.Logger{}
+	logger.SetFlags(log.LstdFlags | log.Lmicroseconds)
+
 	// Load application configuration
 	cfg, err := config.Load("config.json")
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Enable debug output
+	if !cfg.APP.Debug {
+		logger.SetOutput(ioutil.Discard)
 	}
 
 	// Create a channel with page numbers
@@ -29,7 +38,7 @@ func main() {
 	}()
 
 	// Channel of received recipes
-	recipeCH := make(chan recipe.Recipe, cfg.APP.NumOfWorkers)
+	recipeCH := make(chan recipe.Recipe)
 
 	// slice of recipes we are going to print
 	recipes := recipe.Recipes{}
@@ -54,10 +63,12 @@ func main() {
 			defer wg.Done()
 
 			for p := range pageNums {
+				logger.Println("Requesting recipes page", p)
 				results, err := rs.Get(p)
 				if err != nil {
 					log.Fatalf("Failed to fetch page %d\n", p)
 				}
+				logger.Println("Retrieved recipes page", p)
 
 				for i := range results.Results {
 					recipeCH <- recipe.Recipe{
@@ -72,7 +83,7 @@ func main() {
 
 	wg.Wait()
 
-	// Print retrieved recipes to screen
+	// Print recipes to the standard output
 	for _, v := range recipes.Values() {
 		fmt.Println(v)
 	}

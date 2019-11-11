@@ -14,8 +14,9 @@ type Config struct {
 
 // APP hold generic app configuration
 type APP struct {
-	NumOfWorkers int `json:"numOfWorkers"`
-	NumOfPages   int `json:"numOfPages"`
+	NumOfWorkers int  `json:"numOfWorkers"`
+	NumOfPages   int  `json:"numOfPages"`
+	Debug        bool `json:"debug"`
 }
 
 // RecipePuppyAPI holds configuration for recipe puppy api

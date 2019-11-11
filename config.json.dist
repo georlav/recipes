@@ -1,7 +1,8 @@
 {
   "app": {
-    "numOfPages": 15,
-    "numOfWorkers": 2
+    "numOfPages": 5,
+    "numOfWorkers": 2,
+    "debug": false
   },
   "recipePuppyAPI": {
     "host": "http://www.recipepuppy.com",
