@@ -6,8 +6,8 @@ import (
 	"log"
 	"sync"
 
-	"github.com/georlav/recipes/config"
-	"github.com/georlav/recipes/recipe"
+	"github.com/georlav/recipes/internal/config"
+	"github.com/georlav/recipes/internal/recipe"
 )
 
 func main() {

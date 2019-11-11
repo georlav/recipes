@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/georlav/recipes/config"
+	"github.com/georlav/recipes/internal/config"
 )
 
 type Service struct {

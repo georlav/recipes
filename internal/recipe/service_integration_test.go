@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/georlav/recipes/config"
-	"github.com/georlav/recipes/recipe"
+	"github.com/georlav/recipes/internal/config"
 )
 
 func TestService_GetRecipes2(t *testing.T) {
@@ -14,7 +13,7 @@ func TestService_GetRecipes2(t *testing.T) {
 		Host:    "http://www.recipepuppy.com",
 		Timeout: 15,
 	}
-	s := recipe.NewService(c)
+	s := NewService(c)
 
 	testCases := []struct {
 		desc        string

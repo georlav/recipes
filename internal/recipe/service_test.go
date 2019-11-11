@@ -7,8 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/georlav/recipes/config"
-	"github.com/georlav/recipes/recipe"
+	"github.com/georlav/recipes/internal/config"
 )
 
 func TestService_GetRecipes(t *testing.T) {
@@ -58,7 +57,7 @@ func TestService_GetRecipes(t *testing.T) {
 
 			// Setup recipe puppy service
 			c := config.RecipePuppyAPI{Host: ts.URL, Timeout: 5}
-			s := recipe.NewService(c)
+			s := NewService(c)
 
 			result, err := s.Get(tc.page)
 			if err != nil && err.Error() != tc.error.Error() {
