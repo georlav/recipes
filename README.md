@@ -6,9 +6,20 @@ to cook for your puppy and not your puppy.
 http://www.recipepuppy.com/api
 
 ## Makefile
-- Make run
-- Make test
-- Make Build
+To run the app
+```bash
+make run
+```
+
+To run the tests
+```bash
+make test
+```
+
+To produce a build
+```bash
+make build
+```
 
 ## Configuration
 There is a config.json.dist provided with default values, rename to config.json and edit it according to your needs
