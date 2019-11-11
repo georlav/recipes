@@ -1,6 +1,6 @@
 {
   "app": {
-    "numOfPages": 5,
+    "numOfPages": 15,
     "numOfWorkers": 2
   },
   "recipePuppyAPI": {

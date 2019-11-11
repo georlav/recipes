@@ -1,6 +1,6 @@
 package recipe
 
-type Recipes []Recipe
+import "sync"
 
 type Recipe struct {
 	Title       string
@@ -8,25 +8,21 @@ type Recipe struct {
 	PageFound   int
 }
 
-//type Recipes struct {
-//	values []Recipe
-//	m      sync.RWMutex
-//}
-//
-//func (r *Recipes) Append(recipe ...Recipe) {
-//	r.m.Lock()
-//	defer r.m.Unlock()
-//
-//	r.values = append(r.values, recipe...)
-//}
-//
-//func (r *Recipes) Print(recipe ...Recipe) {
-//	r.m.RLock()
-//	defer r.m.RUnlock()
-//
-//	for _, recipe := range r.values {
-//		fmt.Printf(`Recipe: %s, Inghedients: %s, found at page %d`,
-//			recipe.Title, recipe.Ingredients, recipe.PageFound,
-//		)
-//	}
-//}
+type Recipes struct {
+	values []Recipe
+	m      sync.RWMutex
+}
+
+func (r *Recipes) Append(recipes ...Recipe) {
+	r.m.Lock()
+	defer r.m.Unlock()
+
+	r.values = append(r.values, recipes...)
+}
+
+func (r *Recipes) Values(recipes ...Recipe) []Recipe {
+	r.m.RLock()
+	defer r.m.RUnlock()
+
+	return r.values
+}
