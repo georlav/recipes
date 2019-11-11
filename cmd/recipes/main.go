@@ -85,7 +85,9 @@ func main() {
 
 	// Print recipes to the standard output
 	for _, v := range recipes.Values() {
-		fmt.Println(v)
+		fmt.Printf("Title: %s\nIngredients: %s\nRecipe was found at page %d\n\n",
+			v.Title, v.Ingredients, v.PageFound,
+		)
 	}
 
 	fmt.Println("Total retrieved recipes: ", len(recipes.Values()))
