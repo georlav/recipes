@@ -7,13 +7,15 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/georlav/recipes/internal/recipe"
+
 	"github.com/georlav/recipes/internal/config"
 )
 
 func TestService_GetRecipes(t *testing.T) {
 	testCases := []struct {
 		desc       string
-		page       int
+		qp         recipe.QueryParams
 		respFile   string
 		resLen     int
 		statusCode int
@@ -21,29 +23,30 @@ func TestService_GetRecipes(t *testing.T) {
 	}{
 		{
 			desc:       "Should successfully fetch 10 results",
-			page:       1,
+			qp:         recipe.QueryParams{Page: 1},
 			respFile:   "testdata/success.json",
 			resLen:     10,
 			statusCode: http.StatusOK,
 		},
 		{
 			desc:       "Should successfully fetch no results",
-			page:       1000000000,
+			qp:         recipe.QueryParams{Page: 10000000},
 			respFile:   "testdata/empty.json",
 			statusCode: http.StatusOK,
 		},
 		{
-			desc:       "Should fail with error due to invalid params",
+			desc:       "Should fail due to invalid params",
+			qp:         recipe.QueryParams{Page: -1},
 			respFile:   "testdata/empty.json",
 			statusCode: http.StatusInternalServerError,
-			error:      fmt.Errorf("failed to retrive results, %s", http.StatusText(http.StatusInternalServerError)),
+			error:      fmt.Errorf("failed to retrive results, 500 %s", http.StatusText(http.StatusInternalServerError)),
 		},
 		{
 			desc:       "Should fail to unmarshal result due to invalid json response",
-			page:       1,
+			qp:         recipe.QueryParams{},
 			respFile:   "testdata/invalid.json",
 			statusCode: http.StatusOK,
-			error:      fmt.Errorf("invalid character '}' looking for beginning of value"),
+			error:      fmt.Errorf("failed to unmarshal response, invalid character '}' looking for beginning of value"),
 		},
 	}
 
@@ -57,11 +60,14 @@ func TestService_GetRecipes(t *testing.T) {
 
 			// Setup recipe puppy service
 			c := config.RecipePuppyAPI{Host: ts.URL, Timeout: 5}
-			s := NewService(c)
+			s := recipe.NewService(c)
 
-			result, err := s.Get(tc.page)
-			if err != nil && err.Error() != tc.error.Error() {
+			result, err := s.Get(tc.qp)
+			if err != nil && tc.error == nil {
 				t.Fatal(err)
+			}
+			if tc.error != nil && err.Error() != tc.error.Error() {
+				t.Fatalf("Expected to have error: \n%s\ngot\n%s", tc.error, err)
 			}
 
 			if rlen := len(result.Results); rlen != tc.resLen {

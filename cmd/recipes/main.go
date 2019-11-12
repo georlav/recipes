@@ -64,7 +64,7 @@ func main() {
 
 			for p := range pageNums {
 				logger.Println("Requesting recipes page", p)
-				results, err := rs.Get(p)
+				results, err := rs.Get(recipe.QueryParams{Page: p})
 				if err != nil {
 					log.Fatalf("Failed to fetch page %d\n", p)
 				}
@@ -90,5 +90,7 @@ func main() {
 		)
 	}
 
+	fmt.Println("Total pages: ", cfg.APP.NumOfPages)
+	fmt.Println("Results per page: 10")
 	fmt.Println("Total retrieved recipes: ", len(recipes.Values()))
 }

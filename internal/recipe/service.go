@@ -23,10 +23,10 @@ func NewService(cfg config.RecipePuppyAPI) *Service {
 	}
 }
 
-func (s Service) Get(page int) (rr RecipeResponse, err error) {
+func (s Service) Get(qp QueryParams) (rr RecipeResponse, err error) {
 	req, err := http.NewRequest(
 		http.MethodGet,
-		fmt.Sprintf(`%s/%s?p=%d`, s.cfg.Host, "api", page),
+		fmt.Sprintf(`%s/%s?%s`, s.cfg.Host, "api", qp.Encode()),
 		nil,
 	)
 	if err != nil {
@@ -37,22 +37,12 @@ func (s Service) Get(page int) (rr RecipeResponse, err error) {
 	if err != nil {
 		return rr, err
 	}
-
 	if resp.StatusCode != http.StatusOK {
 		return rr, fmt.Errorf("failed to retrive results, %s", resp.Status)
 	}
-
 	if err := json.NewDecoder(resp.Body).Decode(&rr); err != nil {
 		return rr, fmt.Errorf("failed to unmarshal response, %w", err)
 	}
-
-	//for i := range rr.Results {
-	//	r = append(r, Recipe{
-	//		Title:       rr.Results[i].Title,
-	//		Ingredients: rr.Results[i].Ingredients,
-	//		PageFound:   page,
-	//	})
-	//}
 
 	return rr, nil
 }
