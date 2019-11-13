@@ -39,7 +39,7 @@ func TestService_GetRecipes(t *testing.T) {
 			qp:         recipe.QueryParams{Page: -1},
 			respFile:   "testdata/empty.json",
 			statusCode: http.StatusInternalServerError,
-			error:      fmt.Errorf("failed to retrive results, 500 %s", http.StatusText(http.StatusInternalServerError)),
+			error:      fmt.Errorf("failed to retrieve results, 500 %s", http.StatusText(http.StatusInternalServerError)),
 		},
 		{
 			desc:       "Should fail to unmarshal result due to invalid json response",
@@ -81,6 +81,7 @@ func server(responseFile string, status int, t *testing.T) *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(status)
 
+		// nolint:gosec
 		clientResp, err := ioutil.ReadFile(responseFile)
 		if err != nil {
 			t.Fatal(err)

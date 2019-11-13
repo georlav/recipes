@@ -45,7 +45,7 @@ func TestService_GetRecipes2(t *testing.T) {
 			"should fail due to invalid page number",
 			recipe.QueryParams{Page: -1},
 			0,
-			fmt.Errorf("failed to retrive results, 500 %s", http.StatusText(http.StatusInternalServerError)),
+			fmt.Errorf("failed to retrieve results, 500 %s", http.StatusText(http.StatusInternalServerError)),
 		},
 	}
 
@@ -56,7 +56,7 @@ func TestService_GetRecipes2(t *testing.T) {
 			result, err := s.Get(tc.page)
 			if err != nil && tc.error != nil {
 				if tc.error.Error() != err.Error() {
-					t.Fatal(err)
+					t.Fatalf("Unexpected error, expected \n%s got \n%s", tc.error, err)
 				}
 			}
 

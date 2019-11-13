@@ -27,6 +27,7 @@ type RecipePuppyAPI struct {
 
 // Load loads a json config file and returns a config object
 func Load(cfgFile string) (cfg *Config, err error) {
+	// nolint:gosec
 	b, err := ioutil.ReadFile("./" + cfgFile)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open config file %s, %w", cfgFile, err)
