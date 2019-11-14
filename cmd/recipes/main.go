@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -73,6 +74,11 @@ func main() {
 				}
 				logger.Println("Retrieved recipes page", p)
 
+				// Keep results in a file for later use
+				//if err := save(results); err != nil {
+				//	logger.Fatal(err)
+				//}
+
 				for i := range results.Results {
 					recipeCH <- recipe.Recipe{
 						Title:       results.Results[i].Title,
@@ -98,18 +104,22 @@ func main() {
 	fmt.Println("Total retrieved recipes: ", len(recipes.Values()))
 }
 
-////save to file
-//file, err := os.OpenFile("recipes.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0655)
-//if err != nil {
-//logger.Fatal(err)
-//}
-//defer file.Close()
-//
-//writer := bufio.NewWriter(file)
-//j, err := json.Marshal(r)
-//if err != nil {
-//logger.Fatal(err)
-//}
-//if _, err := writer.Write(j); err != nil {
-//logger.Fatal(err)
-//}
+func save(result recipe.ResultsResponse) error {
+	f, err := os.OpenFile("recipes.json", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+
+	b, err := json.Marshal(result.Results)
+	if err != nil {
+		return err
+	}
+
+	data := append(b, []byte("\n")...)
+
+	if _, err := f.Write(data); err != nil {
+		return err
+	}
+
+	return nil
+}
