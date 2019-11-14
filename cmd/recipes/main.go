@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"sync"
 
 	"github.com/georlav/recipes/internal/config"
@@ -11,8 +12,10 @@ import (
 )
 
 func main() {
-	logger := log.Logger{}
-	logger.SetFlags(log.LstdFlags | log.Lmicroseconds)
+	// initialize logger
+	logger := log.New(
+		os.Stdout, "", log.LstdFlags|log.Lmicroseconds,
+	)
 
 	// Load application configuration
 	cfg, err := config.Load("config.json")
@@ -94,3 +97,19 @@ func main() {
 	fmt.Println("Results per page: 10")
 	fmt.Println("Total retrieved recipes: ", len(recipes.Values()))
 }
+
+////save to file
+//file, err := os.OpenFile("recipes.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0655)
+//if err != nil {
+//logger.Fatal(err)
+//}
+//defer file.Close()
+//
+//writer := bufio.NewWriter(file)
+//j, err := json.Marshal(r)
+//if err != nil {
+//logger.Fatal(err)
+//}
+//if _, err := writer.Write(j); err != nil {
+//logger.Fatal(err)
+//}
