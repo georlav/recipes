@@ -1,5 +1,5 @@
 # Recipes
-A simple app that fetches puppy recipes from various providers and prints them to the standard output. Please use them
+A simple app that fetches puppy recipes from various providers and prints them to the standard output. Use those recipes
 to cook for your puppy and not your puppy.
 
 ##  Providers
@@ -22,6 +22,6 @@ make build
 ```
 
 ## Configuration
-There is a config.json.dist provided with default values, rename to config.json and edit it according to your needs
+Most options can be changed from config.json
 
 
