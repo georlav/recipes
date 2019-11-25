@@ -70,7 +70,7 @@ func main() {
 				logger.Println("Requesting recipes page", p)
 				results, err := rs.Get(recipe.QueryParams{Page: p})
 				if err != nil {
-					log.Fatalf("Failed to fetch page %d\n", p)
+					logger.Fatalf("Failed to fetch page %d\n", p)
 				}
 				logger.Println("Retrieved recipes page", p)
 
