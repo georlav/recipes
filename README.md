@@ -24,4 +24,11 @@ make build
 ## Configuration
 Most options can be changed from config.json
 
+## Authors
+* **georlav** - *Initial work* - [georlav](https://github.com/georlav)
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+
 
