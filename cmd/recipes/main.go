@@ -64,7 +64,7 @@ func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(cfg.APP.NumOfWorkers)
 
-	// Initialize puppy recipe api
+	// Initialize puppy recipe client
 	rs := recipe.NewService(cfg.RecipePuppyAPI)
 
 	// Start X goroutines
