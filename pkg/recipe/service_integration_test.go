@@ -1,8 +1,7 @@
 package recipe_test
 
 import (
-	"fmt"
-	"net/http"
+	"errors"
 	"testing"
 
 	"github.com/georlav/recipes/pkg/recipe"
@@ -37,7 +36,7 @@ func TestService_GetRecipes2(t *testing.T) {
 		},
 		{
 			"Should successfully fetch  0 results",
-			recipe.QueryParams{Page: 10000000000},
+			recipe.QueryParams{Page: 100000},
 			0,
 			nil,
 		},
@@ -45,7 +44,7 @@ func TestService_GetRecipes2(t *testing.T) {
 			"should fail due to invalid page number",
 			recipe.QueryParams{Page: -1},
 			0,
-			fmt.Errorf("failed to retrieve results, 500 %s", http.StatusText(http.StatusInternalServerError)),
+			recipe.ErrNoResults,
 		},
 	}
 
@@ -54,14 +53,12 @@ func TestService_GetRecipes2(t *testing.T) {
 
 		t.Run(tc.desc, func(t *testing.T) {
 			result, err := s.Get(tc.page)
-			if err != nil && tc.error != nil {
-				if tc.error.Error() != err.Error() {
-					t.Fatalf("Unexpected error, expected \n%s got \n%s", tc.error, err)
-				}
+			if err != nil && !errors.Is(err, tc.error) {
+				t.Fatalf("Unexpected error, expected \n%s got \n%s", tc.error, err)
 			}
 
-			if rlen := len(result.Results); rlen != tc.resultCount {
-				t.Fatalf("Invalid number of results expected %d got %d", tc.resultCount, rlen)
+			if err == nil && len(result.Results) != tc.resultCount {
+				t.Fatalf("Invalid number of results expected %d got %d", tc.resultCount, len(result.Results))
 			}
 		})
 	}

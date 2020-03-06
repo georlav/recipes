@@ -1,7 +1,7 @@
 package recipe_test
 
 import (
-	"fmt"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -39,14 +39,14 @@ func TestService_GetRecipes(t *testing.T) {
 			qp:         recipe.QueryParams{Page: -1},
 			respFile:   "testdata/empty.json",
 			statusCode: http.StatusInternalServerError,
-			error:      fmt.Errorf("failed to retrieve results, 500 %s", http.StatusText(http.StatusInternalServerError)),
+			error:      recipe.ErrNoResults,
 		},
 		{
 			desc:       "Should fail to unmarshal result due to invalid json response",
 			qp:         recipe.QueryParams{},
 			respFile:   "testdata/invalid.json",
 			statusCode: http.StatusOK,
-			error:      fmt.Errorf("failed to unmarshal response, invalid character '}' looking for beginning of value"),
+			error:      recipe.ErrUnmarshalResponse,
 		},
 	}
 
@@ -63,15 +63,16 @@ func TestService_GetRecipes(t *testing.T) {
 			s := recipe.NewService(c)
 
 			result, err := s.Get(tc.qp)
-			if err != nil && tc.error == nil {
+			if err != nil && !errors.Is(err, tc.error) {
 				t.Fatal(err)
 			}
-			if tc.error != nil && err.Error() != tc.error.Error() {
+
+			if err != nil && !errors.Is(err, tc.error) {
 				t.Fatalf("Expected to have error: \n%s\ngot\n%s", tc.error, err)
 			}
 
-			if rlen := len(result.Results); rlen != tc.resLen {
-				t.Fatalf("Invalid result length expected %d got %d", tc.resLen, rlen)
+			if err == nil && len(result.Results) != tc.resLen {
+				t.Fatalf("Invalid result length expected %d got %d", tc.resLen, len(result.Results))
 			}
 		})
 	}
