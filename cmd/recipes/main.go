@@ -24,7 +24,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Enable debug output
+	// Disable debug output
 	if !cfg.APP.Debug {
 		logger.SetOutput(ioutil.Discard)
 	}
