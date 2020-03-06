@@ -5,7 +5,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/georlav/recipes/internal/recipe"
+	"github.com/georlav/recipes/pkg/recipe"
 )
 
 func TestQueryParams_Encode(t *testing.T) {

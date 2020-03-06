@@ -21,7 +21,7 @@ type APP struct {
 
 // RecipePuppyAPI holds configuration for recipe puppy api
 type RecipePuppyAPI struct {
-	Host    string `json:"host"`
+	URL    string `json:"url"`
 	Timeout int64  `json:"timeout"`
 }
 

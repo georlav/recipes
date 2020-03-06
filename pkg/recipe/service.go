@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/georlav/recipes/internal/config"
+	"github.com/georlav/recipes/pkg/config"
 )
 
 type Service struct {
@@ -26,7 +26,7 @@ func NewService(cfg config.RecipePuppyAPI) *Service {
 func (s Service) Get(qp QueryParams) (rr ResultsResponse, err error) {
 	req, err := http.NewRequest(
 		http.MethodGet,
-		fmt.Sprintf(`%s/%s?%s`, s.cfg.Host, "api", qp.Encode()),
+		fmt.Sprintf(`%s/%s?%s`, s.cfg.URL, "api", qp.Encode()),
 		nil,
 	)
 	if err != nil {

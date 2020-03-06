@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/georlav/recipes/internal/recipe"
+	"github.com/georlav/recipes/pkg/recipe"
 
-	"github.com/georlav/recipes/internal/config"
+	"github.com/georlav/recipes/pkg/config"
 )
 
 func TestService_GetRecipes2(t *testing.T) {
 	c := config.RecipePuppyAPI{
-		Host:    "http://www.recipepuppy.com",
+		URL:    "http://www.recipepuppy.com",
 		Timeout: 15,
 	}
 	s := recipe.NewService(c)

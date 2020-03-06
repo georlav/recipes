@@ -94,11 +94,11 @@ run:
   skip-dirs:
     - test/testdata_etc
   skip-files:
-    - internal/cache/.*_test.go
+    - pkg/cache/.*_test.go
 
 issues:
   exclude-rules:
-    - path: internal/(cache|renameio)/
+    - path: pkg/(cache|renameio)/
       linters:
         - lll
         - gochecknoinits

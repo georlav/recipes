@@ -8,8 +8,8 @@ import (
 	"os"
 	"sync"
 
-	"github.com/georlav/recipes/internal/config"
-	"github.com/georlav/recipes/internal/recipe"
+	"github.com/georlav/recipes/pkg/config"
+	"github.com/georlav/recipes/pkg/recipe"
 )
 
 func main() {

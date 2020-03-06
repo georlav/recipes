@@ -5,7 +5,7 @@
     "debug": true
   },
   "recipePuppyAPI": {
-    "host": "http://www.recipepuppy.com",
+    "url": "http://www.recipepuppy.com",
     "timeout": 15
   }
 }

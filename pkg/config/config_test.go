@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/georlav/recipes/internal/config"
+	"github.com/georlav/recipes/pkg/config"
 )
 
 func TestLoad(t *testing.T) {
