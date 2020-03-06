@@ -5,7 +5,7 @@
 A simple app that fetches puppy recipes from various providers and prints them to the standard output. Use those 
 recipes to cook for your puppy (not your puppy).
 
-##  Providers
+## Current supported providers
 http://www.recipepuppy.com/api
 
 ## Makefile
