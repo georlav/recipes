@@ -12,7 +12,7 @@ import (
 
 func TestService_GetRecipes2(t *testing.T) {
 	c := config.RecipePuppyAPI{
-		URL:    "http://www.recipepuppy.com",
+		URL:     "http://www.recipepuppy.com",
 		Timeout: 15,
 	}
 	s := recipe.NewService(c)
@@ -65,5 +65,4 @@ func TestService_GetRecipes2(t *testing.T) {
 			}
 		})
 	}
-
 }

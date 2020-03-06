@@ -1,3 +1,6 @@
+![Tests](https://github.com/georlav/migrate/workflows/Tests/badge.svg?branch=master)
+![GolangCI](https://github.com/georlav/migrate/workflows/GolangCI/badge.svg?branch=master)
+
 # Recipes
 A simple app that fetches puppy recipes from various providers and prints them to the standard output. Use those 
 recipes to cook for your puppy (not your puppy).

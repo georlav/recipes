@@ -1,8 +1,11 @@
 {
+  "app": {
+    "numOfPages": 10,
+    "numOfWorkers": 2,
+    "debug": true
+  },
   "recipePuppyAPI": {
-    "host": "http://www.recipepuppy.com",
-    "timeout": 15,
-    "numOfWorkers": 15,
-    "numOfPages":   15
+    "url": "http://www.recipepuppy.com",
+    "timeout": 15
   }
 }

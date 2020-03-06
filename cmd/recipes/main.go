@@ -75,9 +75,9 @@ func main() {
 				logger.Println("Retrieved recipes page", p)
 
 				// Keep results in a file for later use
-				//if err := save(results); err != nil {
-				//	logger.Fatal(err)
-				//}
+				// if err := save(results); err != nil {
+				// 	logger.Fatal(err)
+				// }
 
 				for i := range results.Results {
 					recipeCH <- recipe.Recipe{
@@ -104,6 +104,7 @@ func main() {
 	fmt.Println("Total retrieved recipes: ", len(recipes.Values()))
 }
 
+// nolint[:deadcode,unused]
 func save(result recipe.ResultsResponse) error {
 	f, err := os.OpenFile("recipes.json", os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {

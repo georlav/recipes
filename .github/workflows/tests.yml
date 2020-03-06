@@ -1,0 +1,22 @@
+name: Tests
+on: [push]
+jobs:
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get dependencies
+        run: go get -v -t -d ./...
+
+      - name: Run test
+        run: GO111MODULE=on go test ./... -v -race -coverprofile=coverage.txt -covermode=atomic
