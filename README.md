@@ -8,6 +8,11 @@ recipes to cook for your puppy (not your puppy).
 ## Current supported providers
 http://www.recipepuppy.com/api
 
+## Install only the command line tool
+```bash
+go get github.com/georlav/recipes/cmd/recipes/...
+```
+
 ## Makefile
 To run the app
 ```bash
