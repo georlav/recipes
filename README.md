@@ -1,6 +1,6 @@
 # Recipes
-A simple app that fetches puppy recipes from various providers and prints them to the standard output. Use those recipes
-to cook for your puppy and not your puppy.
+A simple app that fetches puppy recipes from various providers and prints them to the standard output. Use those 
+recipes to cook for your puppy (not your puppy).
 
 ##  Providers
 http://www.recipepuppy.com/api
