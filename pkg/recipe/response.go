@@ -1,6 +1,6 @@
 package recipe
 
-// ResultsResponse object to map api response
+// ResultsResponse object to map recipe api response
 type ResultsResponse struct {
 	Title   string  `json:"title"`
 	Version float64 `json:"version"`
