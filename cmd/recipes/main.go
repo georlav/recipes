@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -24,9 +25,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// User can also change those from command line, using as defaults the cfg values
+	flag.IntVar(&cfg.APP.NumOfPages, "pages", cfg.APP.NumOfPages, "number of pages to retrieve --page=1")
+	flag.IntVar(&cfg.APP.NumOfPages, "workers", cfg.APP.NumOfWorkers, "number of workers to start --workers=1")
+	flag.Parse()
+
 	// Disable debug output
 	if !cfg.APP.Debug {
-		logger.SetOutput(ioutil.Discard)
+		logger.SetOutput(ioutil.Discard) 
 	}
 
 	// Create a channel with page numbers
