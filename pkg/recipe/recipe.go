@@ -1,10 +1,16 @@
 package recipe
 
-import "sync"
+import (
+	"encoding/json"
+	"io/ioutil"
+	"sync"
+)
 
 type Recipe struct {
-	Title       string
-	Ingredients string
+	Title       string   `json:"title"`
+	URL         string   `json:"url"`
+	Thumbnail   string   `json:"thumbnail"`
+	Ingredients []string `json:"ingredients"`
 	PageFound   int
 }
 
@@ -25,4 +31,18 @@ func (r *Recipes) Values(recipes ...Recipe) []Recipe {
 	defer r.m.RUnlock()
 
 	return r.values
+}
+
+// Save results to file
+func (r *Recipes) Save() error {
+	b, err := json.Marshal(r.values)
+	if err != nil {
+		return err
+	}
+
+	if err := ioutil.WriteFile("recipes.json", b, 0644); err != nil {
+		return err
+	}
+
+	return nil
 }

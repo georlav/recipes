@@ -1,12 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/georlav/recipes/pkg/config"
@@ -22,7 +22,7 @@ func main() {
 	// Load application configuration
 	cfg, err := config.Load("config.json")
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	// Disable debug output
@@ -32,7 +32,7 @@ func main() {
 
 	// User can also change those from command line, using as defaults the cfg values
 	flag.IntVar(&cfg.APP.NumOfPages, "pages", cfg.APP.NumOfPages, "number of pages to retrieve --page=1")
-	flag.IntVar(&cfg.APP.NumOfPages, "workers", cfg.APP.NumOfWorkers, "number of workers to start --workers=1")
+	flag.IntVar(&cfg.APP.NumOfWorkers, "workers", cfg.APP.NumOfWorkers, "number of workers to start --workers=1")
 	flag.Parse()
 
 	// Create a channel with page numbers
@@ -80,15 +80,17 @@ func main() {
 				}
 				logger.Println("Retrieved recipes page", p)
 
-				// Keep results in a file for later use
-				// if err := save(results); err != nil {
-				// 	logger.Fatal(err)
-				// }
-
 				for i := range results.Results {
+					ingredients := strings.Split(results.Results[i].Ingredients, ",")
+					for i := range ingredients {
+						ingredients[i] = strings.TrimSpace(ingredients[i])
+					}
+
 					recipeCH <- recipe.Recipe{
 						Title:       results.Results[i].Title,
-						Ingredients: results.Results[i].Ingredients,
+						URL:         results.Results[i].Href,
+						Thumbnail:   results.Results[i].Thumbnail,
+						Ingredients: ingredients,
 						PageFound:   p,
 					}
 				}
@@ -104,29 +106,12 @@ func main() {
 			v.Title, v.Ingredients, v.PageFound,
 		)
 	}
-
 	fmt.Println("Total pages: ", cfg.APP.NumOfPages)
 	fmt.Println("Results per page: 10")
 	fmt.Println("Total retrieved recipes: ", len(recipes.Values()))
-}
 
-// nolint[:deadcode,unused]
-func save(result recipe.ResultsResponse) error {
-	f, err := os.OpenFile("recipes.json", os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		return err
+	// Save result to file for later use
+	if err := recipes.Save(); err != nil {
+		logger.Fatal(err)
 	}
-
-	b, err := json.Marshal(result.Results)
-	if err != nil {
-		return err
-	}
-
-	data := append(b, []byte("\n")...)
-
-	if _, err := f.Write(data); err != nil {
-		return err
-	}
-
-	return nil
 }
