@@ -107,7 +107,7 @@ func main() {
 		)
 	}
 	fmt.Println("Total pages: ", cfg.APP.NumOfPages)
-	fmt.Println("Results per page: 10")
+	fmt.Println("Results per page: ", 10)
 	fmt.Println("Total retrieved recipes: ", len(recipes.Values()))
 
 	// Save result to file for later use
